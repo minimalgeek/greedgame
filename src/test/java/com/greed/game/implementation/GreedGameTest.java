@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -78,6 +80,18 @@ public class GreedGameTest {
 
         assertThat(game.getScores()).hasSize(2)
                 .containsExactly(700, 1050);
+    }
+
+    @Test
+    public void max6TurnsEnabled() {
+        game.setMaxTurns(6);
+        assertFalse(game.nextTurn());
+        assertFalse(game.nextTurn());
+        assertFalse(game.nextTurn());
+        assertFalse(game.nextTurn());
+        assertFalse(game.nextTurn());
+        assertTrue(game.nextTurn());
+
     }
 
 }

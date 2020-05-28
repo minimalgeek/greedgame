@@ -1,5 +1,6 @@
 package com.greed.game.implementation;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,9 @@ public class GreedGame {
     private int currentPlayerIndex = 0;
     private int[] scores = new int[2];
 
+    private int maxTurns;
+    private int currentTurn;
+
     public GreedGame(DiceRoller diceRoller, ScoreEvaluator scoreEvaluator) {
         this.diceRoller = diceRoller;
         this.scoreEvaluator = scoreEvaluator;
@@ -20,8 +24,18 @@ public class GreedGame {
         return scores;
     }
 
-    public void nextTurn() {
+    public boolean nextTurn() {
         scores[currentPlayerIndex] += scoreEvaluator.evaluate(diceRoller.roll(6));
         currentPlayerIndex = (currentPlayerIndex + 1) % scores.length;
+        currentTurn ++;
+        if (currentTurn >= maxTurns) {
+            return true;
+        }
+        return false;
+    }
+
+    @Value("${maxTurns}")
+    public void setMaxTurns(int maxTurns) {
+        this.maxTurns = maxTurns;
     }
 }
