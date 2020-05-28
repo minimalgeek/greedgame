@@ -21,25 +21,27 @@ public class ScoreEvaluator {
             return 1200;
 
         return counter.entrySet().stream()
-                .mapToInt(keyValuePair -> {
-                    Integer key = keyValuePair.getKey();
-                    Integer amount = keyValuePair.getValue();
+                .mapToInt(this::countingSortBasedScoreCalculation).sum();
+    }
 
-                    int multiplier = amount >= 3 ? 100 * (int) Math.pow(2, amount-3) : 1;
+    private int countingSortBasedScoreCalculation(Map.Entry<Integer, Integer> keyValuePair) {
+        Integer key = keyValuePair.getKey();
+        Integer amount = keyValuePair.getValue();
 
-                    if (amount >= 3) {
-                        if (key == 1) {
-                            return multiplier * 10;
-                        }
-                        return multiplier * key;
-                    } else {
-                        if (key == 1) {
-                            return 100;
-                        } else if(key == 5) {
-                            return 50;
-                        }
-                    }
-                    return 0;
-                }).sum();
+        int multiplier = amount >= 3 ? 100 * (int) Math.pow(2, amount-3) : 1;
+
+        if (amount >= 3) {
+            if (key == 1) {
+                return multiplier * 10;
+            }
+            return multiplier * key;
+        } else {
+            if (key == 1) {
+                return 100;
+            } else if(key == 5) {
+                return 50;
+            }
+        }
+        return 0;
     }
 }
